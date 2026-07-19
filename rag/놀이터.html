@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🎮 개념 놀이터 — AI 올인원</title>
+<style>
+:root{--bg:#ffffff;--fg:#1b2430;--muted:#5b6673;--line:#e5e8ec;--card:#f8fafc;--accent:#2563eb;--orange:#ea770c;--green:#0e9f6e;--chip:#eef2f7;--code:#f1f4f8}
+@media (prefers-color-scheme: dark){:root{--bg:#0f1418;--fg:#e6ebf1;--muted:#9aa6b2;--line:#232b33;--card:#151b22;--accent:#6ea0ff;--orange:#f0a05a;--green:#3dd68c;--chip:#1d2630;--code:#1a222c}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Pretendard Variable",Pretendard,-apple-system,"Segoe UI","Malgun Gothic",sans-serif;font-size:15.5px;line-height:1.7}
+header{max-width:920px;margin:0 auto;padding:28px 20px 6px}
+header h1{margin:0 0 6px;font-size:24px}
+header p{margin:4px 0;color:var(--muted);font-size:14px}
+nav{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 20px;display:flex;gap:8px;flex-wrap:wrap;max-width:920px;margin:10px auto 0}
+nav a{font-size:13px;padding:5px 12px;border:1px solid var(--line);border-radius:999px;color:var(--fg);text-decoration:none;background:var(--chip)}
+nav a:hover{border-color:var(--accent);color:var(--accent)}
+main{max-width:920px;margin:0 auto;padding:10px 20px 90px}
+section{scroll-margin-top:64px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:22px 0}
+section h2{margin:0 0 4px;font-size:19px}
+.meta{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.meta a{color:var(--accent);text-decoration:none}
+.row{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start}
+.col{flex:1;min-width:260px}
+.ctl{display:flex;align-items:center;gap:10px;margin:7px 0;font-size:14px}
+.ctl label{width:150px;flex:none;color:var(--muted)}
+.ctl input[type=range]{flex:1;accent-color:var(--accent)}
+.ctl b{width:56px;text-align:right;font-variant-numeric:tabular-nums}
+.out{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:10px;font-size:14px}
+.big{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
+.mono{font-family:Consolas,"D2Coding",monospace;font-size:13px}
+.note{font-size:12.5px;color:var(--muted);margin-top:10px}
+button{font:inherit;font-size:13px;padding:6px 12px;border:1px solid var(--line);border-radius:9px;background:var(--chip);color:var(--fg);cursor:pointer;margin:3px 4px 3px 0}
+button:hover{border-color:var(--accent)}
+svg{display:block;max-width:100%;height:auto;touch-action:none;user-select:none}
+.bar{height:20px;border-radius:6px;background:var(--accent);transition:width .15s;min-width:2px}
+.barwrap{display:flex;align-items:center;gap:8px;margin:5px 0}
+.barlabel{width:80px;flex:none;font-size:13px;color:var(--muted)}
+.barval{font-size:13px;font-variant-numeric:tabular-nums;flex:none}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.chip{font-size:12px;background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+textarea,input[type=text]{width:100%;font:inherit;font-size:13.5px;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+#ckview{white-space:pre-wrap;word-break:break-all;font-size:13.5px;line-height:1.9;margin-top:10px}
+#ckview .c0{background:color-mix(in srgb, var(--accent) 22%, transparent);border-radius:3px}
+#ckview .c1{background:color-mix(in srgb, var(--orange) 26%, transparent);border-radius:3px}
+#ckview .ov{background:color-mix(in srgb, var(--green) 34%, transparent);border-radius:3px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin-top:8px}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left}
+.tokbox{display:inline-block;border:1.5px solid var(--accent);border-radius:7px;padding:2px 8px;margin:2px;font-family:Consolas,monospace;font-size:14px;min-width:24px;text-align:center}
+.tokbox.y{border-color:var(--orange)}
+.crown{font-weight:800;color:var(--green)}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎮 개념 놀이터 — 눈과 손으로 이해하기</h1>
+  <p>글과 수식으로 감이 안 올 때 오는 곳. 슬라이더를 움직이면 즉시 반영됩니다. 인터넷 없이 동작합니다.</p>
+  <p>순서 없음 — 로드맵에서 해당 개념을 만나는 주에 와서 5분씩 만지고 가세요. 문서로 돌아가기: <a href="site.html" style="color:var(--accent)">📚 site.html</a></p>
+</header>
+<nav>
+  <a href="#neuron">🧠 뉴런</a><a href="#cosine">📐 코사인 유사도</a><a href="#softmax">🌡️ Softmax·temperature</a>
+  <a href="#gd">⛷️ 경사하강법</a><a href="#chunk">✂️ Chunking</a><a href="#bm25">🔍 BM25</a><a href="#nexttoken">🔮 Next-token</a>
+</nav>
+<main>
+
+<!-- ══════════ 1. 뉴런 ══════════ -->
+<section id="neuron">
+  <h2>🧠 뉴런 하나 — 가중합 + 편향 + 활성화</h2>
+  <div class="meta">W3 저녁 · 관련: <a href="site.html#/01-basics/08-신경망-기초.md">08-신경망-기초</a> ① — 문서의 손계산 예제를 프리셋 버튼으로 재현해보세요</div>
+  <div class="row">
+    <div class="col">
+      <div class="ctl"><label>입력 x₁</label><input type="range" id="nx1" min="-2" max="2" step="0.1" value="1"><b id="nx1v"></b></div>
+      <div class="ctl"><label>입력 x₂</label><input type="range" id="nx2" min="-2" max="2" step="0.1" value="2"><b id="nx2v"></b></div>
+      <div class="ctl"><label>가중치 w₁</label><input type="range" id="nw1" min="-2" max="2" step="0.1" value="0.5"><b id="nw1v"></b></div>
+      <div class="ctl"><label>가중치 w₂</label><input type="range" id="nw2" min="-2" max="2" step="0.1" value="-0.3"><b id="nw2v"></b></div>
+      <div class="ctl"><label>편향 b</label><input type="range" id="nb" min="-1" max="1" step="0.1" value="0.1"><b id="nbv"></b></div>
+      <div class="ctl"><label>활성화 함수</label>
+        <label style="width:auto"><input type="radio" name="nact" value="relu" checked> ReLU</label>
+        <label style="width:auto"><input type="radio" name="nact" value="sigmoid"> sigmoid</label>
+      </div>
+      <button id="np1">📖 문서 예제 ① (침묵)</button><button id="np2">📖 문서 예제 ② (발화)</button>
+    </div>
+    <div class="col">
+      <div class="out">
+        <div class="mono" id="neq"></div>
+        <div style="margin-top:8px">출력: <span class="big" id="nout"></span> <span id="nstat"></span></div>
+        <div class="barwrap"><div class="bar" id="nbar" style="background:var(--green)"></div></div>
+      </div>
+      <div class="note">가중치 w를 움직여보세요 — "학습"이란 loss가 줄도록 이 w들을 자동으로 조금씩 움직이는 것입니다. 여러분이 지금 손으로 하는 일을 optimizer가 대신합니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 2. 코사인 ══════════ -->
+<section id="cosine">
+  <h2>📐 코사인 유사도 — 화살표 끝을 드래그하세요</h2>
+  <div class="meta">W2~4 · 관련: <a href="site.html#/01-basics/04-최소한의-수학.md">최소한의-수학</a> 3번, <a href="site.html#/04-concepts/임베딩-완전정복.md">임베딩-완전정복</a></div>
+  <div class="row">
+    <div class="col" style="max-width:380px">
+      <svg id="cosvg" viewBox="0 0 340 340" aria-label="벡터 캔버스">
+        <g id="cogrid"></g>
+        <line x1="0" y1="170" x2="340" y2="170" stroke="var(--muted)" stroke-width="1"/>
+        <line x1="170" y1="0" x2="170" y2="340" stroke="var(--muted)" stroke-width="1"/>
+        <line id="la" x1="170" y1="170" stroke="var(--accent)" stroke-width="3"/>
+        <line id="lb" x1="170" y1="170" stroke="var(--orange)" stroke-width="3"/>
+        <circle id="ha" r="9" fill="var(--accent)" style="cursor:grab"/>
+        <circle id="hb" r="9" fill="var(--orange)" style="cursor:grab"/>
+      </svg>
+      <button id="cp1">📖 (3,4)·(6,8) → 1.0</button><button id="cp2">📖 (3,4)·(4,−3) → 0.0</button><button id="cp3">반대 방향</button>
+    </div>
+    <div class="col">
+      <div class="out">
+        <div>a = <b id="cova" style="color:var(--accent)"></b> &nbsp; b = <b id="covb" style="color:var(--orange)"></b></div>
+        <div class="mono" id="cocalc" style="margin-top:6px"></div>
+        <div style="margin-top:8px">cos = <span class="big" id="cosval"></span> <span id="cosinterp"></span></div>
+      </div>
+      <div class="note">벡터 b를 같은 방향으로 늘여보세요 — <b>길이가 변해도 cos은 그대로</b>입니다 (방향만 봄). 이게 임베딩 검색이 문장 길이에 휘둘리지 않는 이유.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 3. softmax ══════════ -->
+<section id="softmax">
+  <h2>🌡️ Softmax와 temperature — 점수가 확률이 되는 곳</h2>
+  <div class="meta">W3~4 저녁 · 관련: <a href="site.html#/01-basics/04-최소한의-수학.md">최소한의-수학</a> 5번, <a href="site.html#/04-concepts/사전훈련-원리.md">사전훈련-원리</a> ⑥ (sampling)</div>
+  <div class="row">
+    <div class="col">
+      <div class="ctl"><label>토큰 "서울" 점수</label><input type="range" id="sl1" min="-5" max="5" step="0.1" value="2"><b id="sl1v"></b></div>
+      <div class="ctl"><label>토큰 "부산" 점수</label><input type="range" id="sl2" min="-5" max="5" step="0.1" value="1"><b id="sl2v"></b></div>
+      <div class="ctl"><label>토큰 "사과" 점수</label><input type="range" id="sl3" min="-5" max="5" step="0.1" value="0.1"><b id="sl3v"></b></div>
+      <div class="ctl"><label>🌡️ temperature</label><input type="range" id="st" min="0.1" max="5" step="0.1" value="1"><b id="stv"></b></div>
+      <button id="sp1">T=0.2 (결정적)</button><button id="sp2">T=1.0</button><button id="sp3">T=5 (거의 균등)</button>
+    </div>
+    <div class="col">
+      <div class="out">
+        <div class="barwrap"><span class="barlabel">서울</span><div class="bar" id="sb1"></div><span class="barval" id="sv1"></span></div>
+        <div class="barwrap"><span class="barlabel">부산</span><div class="bar" id="sb2" style="background:var(--orange)"></div><span class="barval" id="sv2"></span></div>
+        <div class="barwrap"><span class="barlabel">사과</span><div class="bar" id="sb3" style="background:var(--green)"></div><span class="barval" id="sv3"></span></div>
+        <div id="snote" style="margin-top:8px;font-size:13.5px"></div>
+      </div>
+      <div class="note">"대한민국의 수도는" 다음 토큰을 뽑는 상황이라 상상하세요. T를 내리면 1등이 독식(RAG가 원하는 것), 올리면 "사과"가 뽑힐 수도 있게 됩니다(환각의 맛).</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 4. 경사하강 ══════════ -->
+<section id="gd">
+  <h2>⛷️ 경사하강법 — learning rate가 하는 일</h2>
+  <div class="meta">W3~6 저녁 · 관련: <a href="site.html#/01-basics/04-최소한의-수학.md">최소한의-수학</a> 6번, <a href="site.html#/04-concepts/사전훈련-원리.md">사전훈련-원리</a> ⑤ — W6의 lr 실험 예고편</div>
+  <div class="row">
+    <div class="col" style="max-width:520px">
+      <svg id="gdsvg" viewBox="0 0 500 260">
+        <path id="gdcurve" fill="none" stroke="var(--muted)" stroke-width="2"/>
+        <line id="gdmin" stroke="var(--green)" stroke-dasharray="4 4" stroke-width="1"/>
+        <g id="gdtrail"></g>
+        <circle id="gdball" r="8" fill="var(--accent)"/>
+      </svg>
+    </div>
+    <div class="col">
+      <div class="ctl"><label>learning rate</label><input type="range" id="glr" min="0.01" max="1.2" step="0.01" value="0.1"><b id="glrv"></b></div>
+      <div>
+        <button id="gstep">👣 한 걸음</button><button id="gauto">▶️ 자동 12걸음</button><button id="greset">↺ 리셋</button>
+      </div>
+      <div>프리셋: <button class="glrp" data-lr="0.02">0.02 거북이</button><button class="glrp" data-lr="0.1">0.1 무난</button><button class="glrp" data-lr="0.5">0.5 ⚡한방</button><button class="glrp" data-lr="1">1.0 🪀진동</button><button class="glrp" data-lr="1.15">1.15 💥발산</button></div>
+      <div class="out">
+        <div class="mono" id="gdinfo"></div>
+        <div id="gdstat" style="margin-top:6px;font-weight:700"></div>
+      </div>
+      <div class="note">loss(w)=(w−3)²+1 인 산. 공은 w=−5에서 출발, 목표는 계곡 바닥(w=3). <b>lr을 1.15로 놓고 자동 실행</b> — tiny에서 loss가 NaN이 되는 바로 그 현상입니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 5. chunking ══════════ -->
+<section id="chunk">
+  <h2>✂️ Chunking — size와 overlap의 트레이드오프</h2>
+  <div class="meta">W2 · 관련: <a href="site.html#/01-basics/03-RAG-기초.md">03-RAG-기초</a> 3번, <a href="site.html#/02-gongo-rag/src/chunker.py">src/chunker.py</a> — 구현 전에 감 잡기</div>
+  <textarea id="cktext" rows="4">제1장 신청 자격. 만 39세 이하의 예비창업자 또는 창업 3년 이내 기업이어야 하며, 공고일 기준 사업자등록이 유효해야 한다. 제2장 지원 내용. 사업화 자금을 최대 1억원까지 지원하며, 지원 금액의 30퍼센트 이상은 자부담으로 충당해야 한다. 제3장 신청 기한. 2026년 7월 31일 18시까지 온라인으로 접수하며, 기한 이후 접수분은 심사하지 않는다. 제4장 문의. 창업진흥원 대표번호로 문의할 수 있다.</textarea>
+  <div class="ctl"><label>chunk_size</label><input type="range" id="cksize" min="40" max="300" step="10" value="120"><b id="cksizev"></b></div>
+  <div class="ctl"><label>overlap</label><input type="range" id="ckov" min="0" max="100" step="5" value="30"><b id="ckovv"></b></div>
+  <div class="chips"><span class="chip" id="ckstats"></span><span class="chip">🟦 짝수 조각</span><span class="chip">🟧 홀수 조각</span><span class="chip">🟩 겹침(overlap)</span></div>
+  <div class="out" id="ckview"></div>
+  <div class="note">① size를 40까지 줄이면 — "신청 자격"과 "만 39세"가 다른 조각으로 찢어지는 게 보이나요? ② overlap을 0으로 — 경계에서 문장이 반토막 나도 구제가 안 됩니다. ③ size 300 — 조각 하나에 여러 주제가 섞입니다(검색이 둔해짐).</div>
+</section>
+
+<!-- ══════════ 6. BM25 ══════════ -->
+<section id="bm25">
+  <h2>🔍 BM25 라이브 계산기 — 손계산 예제를 움직여보기</h2>
+  <div class="meta">W3 · 관련: <a href="site.html#/04-concepts/BM25-완전정복.md">BM25-완전정복</a> — k1=1.5, b=0.75일 때 문서의 손계산(D2≈1.41 &gt; D1≈0.91 &gt; D3≈0.50)과 일치해야 합니다</div>
+  <div class="mono" style="margin-bottom:8px">D1: 청년 창업 지원 사업 공고 · D2: 창업 기업 지원 금액 안내 · D3: 청년 주택 정책 안내</div>
+  <div class="ctl"><label>질문</label><input type="text" id="bmq" value="청년 지원 금액"></div>
+  <div class="ctl"><label>k1 (빈도 포화)</label><input type="range" id="bmk1" min="0.2" max="3" step="0.1" value="1.5"><b id="bmk1v"></b></div>
+  <div class="ctl"><label>b (길이 보정)</label><input type="range" id="bmb" min="0" max="1" step="0.05" value="0.75"><b id="bmbv"></b></div>
+  <div class="chips" id="bmidf"></div>
+  <div class="out" id="bmout"></div>
+  <div class="note">실험해보세요: ① 질문을 "창업 안내"로 — 두 단어 다 흔해서(IDF↓) 점수 차가 작아집니다. ② b=0으로 — 길이 보정이 꺼지면 짧은 D3의 이점이 사라집니다. ③ 질문에 "금액 금액 금액" — k1 포화 때문에 3번 써도 점수가 3배가 안 됩니다.</div>
+</section>
+
+<!-- ══════════ 7. next-token ══════════ -->
+<section id="nexttoken">
+  <h2>🔮 Next-token 데이터셋 — x를 한 칸 밀면 y</h2>
+  <div class="meta">W2 저녁 · 관련: <a href="site.html#/04-concepts/사전훈련-원리.md">사전훈련-원리</a> ②, <a href="site.html#/03-tiny-pretraining/src/02_dataset.py">02_dataset.py</a> — get_batch가 만드는 것이 정확히 이것</div>
+  <div class="ctl"><label>텍스트</label><input type="text" id="nttext" value="안녕하세요 반갑습니다"></div>
+  <div class="ctl"><label>block_size</label><input type="range" id="ntblock" min="2" max="8" step="1" value="4"><b id="ntblockv"></b></div>
+  <div class="ctl"><label>시작 위치 i</label><input type="range" id="ntpos" min="0" max="5" step="1" value="0"><b id="ntposv"></b></div>
+  <div class="out">
+    <div>x = <span id="ntx"></span></div>
+    <div style="margin-top:6px">y = <span id="nty"></span> <span class="note" style="display:inline">← x를 한 칸 민 것</span></div>
+    <div id="ntlist" class="mono" style="margin-top:10px"></div>
+  </div>
+  <div class="note">한 (x, y) 쌍 안에 block_size개의 문제가 들어 있습니다 — 라벨을 사람이 만들지 않아도 텍스트 자신이 정답인 이유. 시작 위치 슬라이더가 <code>torch.randint</code>가 하는 일입니다.</div>
+</section>
+
+</main>
+<script>
+"use strict";
+const $=s=>document.querySelector(s);
+const fmt=(x,d=3)=>Number(x).toFixed(d);
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+
+/* ── 1. 뉴런 ─────────────────────────────── */
+(function(){
+  const ids=["nx1","nx2","nw1","nw2","nb"];
+  function upd(){
+    const [x1,x2,w1,w2,b]=ids.map(i=>+$("#"+i).value);
+    ids.forEach(i=>$("#"+i+"v").textContent=fmt(+$("#"+i).value,1));
+    const z=w1*x1+w2*x2+b;
+    const act=document.querySelector("input[name=nact]:checked").value;
+    const y=act==="relu"?Math.max(0,z):1/(1+Math.exp(-z));
+    $("#neq").textContent=`z = ${fmt(w1,1)}×${fmt(x1,1)} + ${fmt(w2,1)}×${fmt(x2,1)} + ${fmt(b,1)} = ${fmt(z,2)}   →  ${act}(z)`;
+    $("#nout").textContent=fmt(y,3);
+    const on=act==="relu"?z>0:y>0.5;
+    $("#nstat").textContent=on?"⚡ 발화":"😴 침묵";
+    const w=act==="relu"?Math.min(100,y/5*100):y*100;
+    $("#nbar").style.width=Math.max(2,w)+"%";
+  }
+  ids.forEach(i=>$("#"+i).addEventListener("input",upd));
+  document.querySelectorAll("input[name=nact]").forEach(r=>r.addEventListener("change",upd));
+  function preset(vals){ids.forEach((i,k)=>$("#"+i).value=vals[k]);upd();}
+  $("#np1").onclick=()=>preset([1,2,0.5,-0.3,0.1]);   // z=0.0 침묵
+  $("#np2").onclick=()=>preset([2,1,0.5,-0.3,0.1]);   // z=0.8 발화
+  upd();
+})();
+
+/* ── 2. 코사인 ───────────────────────────── */
+(function(){
+  const svg=$("#cosvg"),U=20,C=170;
+  let a={x:3,y:4},b={x:6,y:8},drag=null;
+  const grid=$("#cogrid");
+  let g="";for(let v=-8;v<=8;v++){const p=C+v*U;g+=`<line x1="${p}" y1="0" x2="${p}" y2="340" stroke="var(--line)" stroke-width="1"/><line x1="0" y1="${p}" x2="340" y2="${p}" stroke="var(--line)" stroke-width="1"/>`;}
+  grid.innerHTML=g;
+  const px=v=>C+v.x*U, py=v=>C-v.y*U;
+  function draw(){
+    $("#la").setAttribute("x2",px(a));$("#la").setAttribute("y2",py(a));
+    $("#lb").setAttribute("x2",px(b));$("#lb").setAttribute("y2",py(b));
+    $("#ha").setAttribute("cx",px(a));$("#ha").setAttribute("cy",py(a));
+    $("#hb").setAttribute("cx",px(b));$("#hb").setAttribute("cy",py(b));
+    const dot=a.x*b.x+a.y*b.y, na=Math.hypot(a.x,a.y), nb=Math.hypot(b.x,b.y);
+    const cos=dot/(na*nb);
+    $("#cova").textContent=`(${a.x}, ${a.y})`;$("#covb").textContent=`(${b.x}, ${b.y})`;
+    $("#cocalc").textContent=`a·b = ${fmt(dot,2)}   |a| = ${fmt(na,2)}   |b| = ${fmt(nb,2)}`;
+    $("#cosval").textContent=fmt(cos,4);
+    const t=cos>0.95?"거의 같은 의미/방향":cos>0.5?"관련 있음":cos>-0.2?"거의 무관":"반대 방향";
+    $("#cosinterp").textContent="← "+t;
+  }
+  function toGrid(e){
+    const r=svg.getBoundingClientRect();
+    const sx=(e.clientX-r.left)/r.width*340, sy=(e.clientY-r.top)/r.height*340;
+    let x=Math.round((sx-C)/U*2)/2, y=Math.round((C-sy)/U*2)/2;
+    x=Math.max(-8,Math.min(8,x)); y=Math.max(-8,Math.min(8,y));
+    if(x===0&&y===0)x=0.5;
+    return{x,y};
+  }
+  $("#ha").addEventListener("pointerdown",e=>{drag=a;svg.setPointerCapture(e.pointerId)});
+  $("#hb").addEventListener("pointerdown",e=>{drag=b;svg.setPointerCapture(e.pointerId)});
+  svg.addEventListener("pointermove",e=>{if(!drag)return;const p=toGrid(e);drag.x=p.x;drag.y=p.y;draw();});
+  svg.addEventListener("pointerup",()=>drag=null);
+  $("#cp1").onclick=()=>{a={x:3,y:4};b={x:6,y:8};draw();};
+  $("#cp2").onclick=()=>{a={x:3,y:4};b={x:4,y:-3};draw();};
+  $("#cp3").onclick=()=>{a={x:3,y:4};b={x:-3,y:-4};draw();};
+  draw();
+})();
+
+/* ── 3. softmax ──────────────────────────── */
+(function(){
+  const L=["sl1","sl2","sl3"];
+  function upd(){
+    const T=+$("#st").value;
+    $("#stv").textContent=fmt(T,1);
+    const logits=L.map(i=>{const v=+$("#"+i).value;$("#"+i+"v").textContent=fmt(v,1);return v;});
+    const ex=logits.map(l=>Math.exp(l/T)), sum=ex.reduce((s,v)=>s+v,0);
+    const p=ex.map(v=>v/sum);
+    p.forEach((v,i)=>{$("#sb"+(i+1)).style.width=(v*100*2.2)+"px";$("#sv"+(i+1)).textContent=(v*100).toFixed(1)+"%";});
+    $("#snote").textContent=T<=0.4?"❄️ 결정적 — 사실상 1등만 뽑힘 (RAG 답변 모드)":T>=2.5?"🔥 거의 균등 — '사과'도 종종 뽑힘 (헛소리 위험)":"🌤️ 학습된 분포 그대로";
+  }
+  [...L,"st"].forEach(i=>$("#"+i).addEventListener("input",upd));
+  $("#sp1").onclick=()=>{$("#st").value=0.2;upd();};
+  $("#sp2").onclick=()=>{$("#st").value=1;upd();};
+  $("#sp3").onclick=()=>{$("#st").value=5;upd();};
+  upd();
+})();
+
+/* ── 4. 경사하강 ─────────────────────────── */
+(function(){
+  const f=w=>(w-3)*(w-3)+1, W0=-5;
+  const X=w=>20+(w+7)/20*460, Y=v=>240-Math.min(v,60)/60*220;
+  let w=W0, trail=[], timer=null;
+  let d="";for(let i=0;i<=200;i++){const wx=-7+i*0.1;d+=(i?"L":"M")+X(wx).toFixed(1)+" "+Y(f(wx)).toFixed(1)+" ";}
+  $("#gdcurve").setAttribute("d",d);
+  const m=$("#gdmin");m.setAttribute("x1",X(3));m.setAttribute("x2",X(3));m.setAttribute("y1",20);m.setAttribute("y2",240);
+  function draw(){
+    $("#glrv").textContent=fmt(+$("#glr").value,2);
+    const loss=f(w), clip=Math.max(-7,Math.min(13,w));
+    $("#gdball").setAttribute("cx",X(clip));$("#gdball").setAttribute("cy",Y(loss));
+    $("#gdtrail").innerHTML=trail.slice(-14).map((t,i,arr)=>`<circle cx="${X(Math.max(-7,Math.min(13,t.w)))}" cy="${Y(f(t.w))}" r="4" fill="var(--accent)" opacity="${0.15+0.5*i/arr.length}"/>`).join("");
+    $("#gdinfo").textContent=`w = ${Math.abs(w)>1e5?w.toExponential(1):fmt(w,3)}    loss = ${loss>1e5?loss.toExponential(1):fmt(loss,3)}    (걸음 ${trail.length})`;
+    const dist=Math.abs(w-3);
+    $("#gdstat").textContent=dist>50?"💥 발산했습니다! learning rate를 줄이세요 (리셋 후 재시도)":dist<0.02?"🎯 수렴! 계곡 바닥 도착":"";
+  }
+  function step(){
+    trail.push({w});
+    w=w-(+$("#glr").value)*2*(w-3);   // w ← w − lr · f'(w)
+    draw();
+    if(Math.abs(w-3)>50&&timer){clearInterval(timer);timer=null;}
+  }
+  $("#gstep").onclick=step;
+  $("#gauto").onclick=()=>{if(timer)return;let n=0;timer=setInterval(()=>{step();if(++n>=12){clearInterval(timer);timer=null;}},170);};
+  $("#greset").onclick=()=>{if(timer){clearInterval(timer);timer=null;}w=W0;trail=[];draw();};
+  document.querySelectorAll(".glrp").forEach(b=>b.onclick=()=>{$("#glr").value=b.dataset.lr;draw();});
+  $("#glr").addEventListener("input",draw);
+  draw();
+})();
+
+/* ── 5. chunking ─────────────────────────── */
+(function(){
+  function upd(){
+    const text=$("#cktext").value;
+    let size=+$("#cksize").value, ov=+$("#ckov").value;
+    if(ov>=size){ov=size-10;$("#ckov").value=ov;}
+    $("#cksizev").textContent=size;$("#ckovv").textContent=ov;
+    const step=size-ov, chunks=[];
+    for(let s=0;s<text.length;s+=step){const piece=text.slice(s,s+size);if(piece)chunks.push([s,Math.min(s+size,text.length)]);}
+    const cnt=new Array(text.length).fill(0), owner=new Array(text.length).fill(0);
+    chunks.forEach(([s,e],i)=>{for(let k=s;k<e;k++){cnt[k]++;owner[k]=i;}});
+    let html="",cur=null,buf="";
+    const cls=k=>cnt[k]>=2?"ov":"c"+(owner[k]%2);
+    for(let k=0;k<text.length;k++){const c=cls(k);if(c!==cur){if(buf)html+=`<span class="${cur}">${esc(buf)}</span>`;cur=c;buf="";}buf+=text[k];}
+    if(buf)html+=`<span class="${cur}">${esc(buf)}</span>`;
+    $("#ckview").innerHTML=html||"(텍스트를 입력하세요)";
+    const lens=chunks.map(([s,e])=>e-s);
+    $("#ckstats").textContent=`조각 ${chunks.length}개 · 평균 ${lens.length?Math.round(lens.reduce((a,b)=>a+b,0)/lens.length):0}자 · 마지막 ${lens.length?lens[lens.length-1]:0}자`;
+  }
+  ["cktext","cksize","ckov"].forEach(i=>$("#"+i).addEventListener("input",upd));
+  upd();
+})();
+
+/* ── 6. BM25 ─────────────────────────────── */
+(function(){
+  const corpus=["청년 창업 지원 사업 공고","창업 기업 지원 금액 안내","청년 주택 정책 안내"];
+  const docs=corpus.map(d=>d.toLowerCase().split(/\s+/));
+  const N=docs.length, avg=docs.reduce((s,d)=>s+d.length,0)/N;
+  const df=t=>docs.filter(d=>d.includes(t)).length;
+  const idf=t=>Math.log((N-df(t)+0.5)/(df(t)+0.5)+1);
+  function upd(){
+    const k1=+$("#bmk1").value, b=+$("#bmb").value;
+    $("#bmk1v").textContent=fmt(k1,1);$("#bmbv").textContent=fmt(b,2);
+    const q=$("#bmq").value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    $("#bmidf").innerHTML=q.map(t=>{const d=df(t);return `<span class="chip">IDF(${esc(t)}) = ${fmt(idf(t),3)}${d===0?" · 코퍼스에 없음":` · ${d}개 문서에 등장`}</span>`;}).join("");
+    const scores=docs.map(dt=>{
+      const norm=k1*(1-b+b*dt.length/avg);
+      return q.reduce((s,t)=>{const f=dt.filter(x=>x===t).length;return f?s+idf(t)*f*(k1+1)/(f+norm):s;},0);
+    });
+    const max=Math.max(...scores,1e-9), top=scores.indexOf(Math.max(...scores));
+    $("#bmout").innerHTML="<table><tr><th></th><th>문서</th><th>점수</th><th style='width:38%'></th></tr>"+
+      corpus.map((c,i)=>`<tr><td>${i===top&&scores[i]>0?'<span class="crown">👑</span>':''} D${i+1}</td><td>${esc(c)}</td><td class="mono">${fmt(scores[i],3)}</td><td><div class="bar" style="width:${Math.max(2,scores[i]/max*100)}%;${i===top?'':'opacity:.45'}"></div></td></tr>`).join("")+"</table>";
+  }
+  ["bmq","bmk1","bmb"].forEach(i=>$("#"+i).addEventListener("input",upd));
+  upd();
+})();
+
+/* ── 7. next-token ───────────────────────── */
+(function(){
+  function upd(){
+    const text=$("#nttext").value;
+    const B=+$("#ntblock").value;
+    const maxI=Math.max(0,text.length-B-1);
+    const pos=$("#ntpos");pos.max=maxI;if(+pos.value>maxI)pos.value=maxI;
+    const i=+pos.value;
+    $("#ntblockv").textContent=B;$("#ntposv").textContent=i;
+    if(text.length<B+1){$("#ntx").textContent="(텍스트가 너무 짧습니다)";$("#nty").textContent="";$("#ntlist").textContent="";return;}
+    const x=text.slice(i,i+B), y=text.slice(i+1,i+B+1);
+    const box=(s,cls)=>[...s].map(ch=>`<span class="tokbox ${cls}">${esc(ch===" "?"␣":ch)}</span>`).join("");
+    $("#ntx").innerHTML=box(x,"");$("#nty").innerHTML=box(y,"y");
+    let rows="";
+    for(let t=0;t<B;t++)rows+=`"${esc(text.slice(i,i+t+1))}" 다음은? → "${esc(text[i+t+1]===" "?"␣":text[i+t+1])}"\n`;
+    $("#ntlist").textContent=rows;
+  }
+  ["nttext","ntblock","ntpos"].forEach(i=>$("#"+i).addEventListener("input",upd));
+  upd();
+})();
+</script>
+</body>
+</html>
